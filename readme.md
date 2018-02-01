@@ -157,6 +157,11 @@ python_terp is intended to make language modification to Python easier to previe
 
     python test/python_terp_test.py test/python_terp_ex.py
 
+# Caveats
+
+- Slow, as expected from running an interpreter inside another interpreter.
+- Still uses quite a bit of CPython features (so its not easy to port to another language) such as dicts and boolean operations.
+
 # Todo
 
 Pull requests welcome.
