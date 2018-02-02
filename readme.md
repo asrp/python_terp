@@ -155,7 +155,7 @@ before running `pyterp.run`  will make `foo` available as a global variable.
 
 python_terp is intended to make language modification to Python easier to preview changes more quickly and is not intended for full CPython compatibility. However, a large subset of Python is already included. In particular, enough to run the first stage of its parser.
 
-    python test/python_terp_test.py test/python_terp_ex.py
+    python test/python_terp_test.py test/parse_ex.py
 
 # Caveats
 
