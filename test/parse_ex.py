@@ -13,10 +13,10 @@ import boot_grammar
 import python_grammar
 grammar = boot_grammar.bootstrap + boot_grammar.extra
 match_tree = i1.match(i1.rules['grammar'][-1], grammar)
+match_tree.pprint()
+# Not tested beyond this point.
+
 i2 = boot_stackless.Interpreter(match_tree)
 match_tree2 = i2.match(i2.rules['grammar'][-1], grammar + boot_grammar.diff)
 i3 = boot_terp.Interpreter(match_tree2)
 match_tree3 = i3.match(i3.rules['grammar'][-1], python_grammar.full_definition + python_grammar.extra)
-import python
-pyi = python.Interpreter(match_tree3)
-#python_grammar.full_definition + python_grammar.extra

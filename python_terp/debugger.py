@@ -48,7 +48,7 @@ class Debugger:
             elif command == "s":
                 self.waitlen = None
                 return
-            elif command == "s":
+            elif command == "l":
                 terp.stack_trace()
             elif command.startswith("b "):
                 self.command_buffer = eval(command[2:])

@@ -624,6 +624,7 @@ class Interpreter:
             prev = ""
             self.repl_count += 1
             returned = self.run(output, "<console-%s>" % self.repl_count,
-                                self.scope['__module__'], command.split("\n"))
+                                self.lookup('__module__'),
+                                [line+"\n" for line in command.split("\n")])
             if returned is not None:
                 print returned
