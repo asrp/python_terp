@@ -114,6 +114,10 @@ fix the second bug and continue
 
 This would make it easier to debug long computations without explicit pickling or debug rare bugs such as requests to a webserver.
 
+## Easy grammar modification and parsing debugging
+
+See [this example](http://blog.asrpo.com/adding_new_statement).
+
 ## Low complexity
 
 Current line counts are
@@ -153,7 +157,7 @@ before running `pyterp.run`  will make `foo` available as a global variable.
 
 ## Python compatibility
 
-python_terp is intended to make language modification to Python easier to preview changes more quickly and is not intended for full CPython compatibility. However, a large subset of Python is already included. In particular, enough to run the first stage of its parser.
+python_terp is intended to make language modification to Python easier to preview changes more quickly and is not intended for full CPython compatibility. However, currently, a large subset of Python is already included. In particular, enough to run the first stage of its parser.
 
     python test/python_terp_test.py test/parse_ex.py
 
@@ -170,4 +174,41 @@ Pull requests welcome.
 - Add nicer interface for edit and continue (diff the two versions of the source).
 - Add more AST node semantics like `yield` (make just take a portion of the call stack and pass it around).
 - Runtime grammar modifications so new AST nodes can be added (just need to chain existing tools together).
+- Replace by Python 3 (both host and target)
 - Document internals some more.
+
+# Some question and answers
+
+## What's the intended future direction?
+
+Initial evolution would be need driven. Some effort would be spent keeping everything as small and simple as possible, which may lead to differences with CPython. Unless there's a use for tracking CPython more closely, of course. Anything to large could always be put in a separate module since almost all modifications are possible at runtime.
+
+## How does exec and compile work?
+
+There isn't really a `compile` or `exec`. There's backticks that I've repurposed to create thunks (quotes of AST nodes with a scope) and there's `evaluate` that can run those thunks.
+
+    p>> n = `print(1)`
+    p>> n
+    <python_terp.python_terp.Thunk object at 0x7f273a77dc50>
+    p>> evaluate(n)
+    1
+    p>> x = 3
+    p>> n = `x += 1`
+    p>> evaluate(n)
+    p>> x
+    4
+
+## How does type work?
+
+The host interpreter's `type()` function is passed through so `python_terp` objects (that aren't passed through Python objects) are all of type `python_terp.Instance`.
+
+    p>> simport simple_ast
+    p>> type
+    <type 'type'>
+    p>> import objects
+    p>> l = objects.List()
+    p>> type(l)
+    <class 'python_terp.python_terp.Instance'>
+    p>> d = objects.Dict()
+    p>> type(d)
+    <class 'python_terp.python_terp.Instance'>
